@@ -18,6 +18,11 @@ $.init.add((done) => {
 //初始化MongodDB
 $.init.load(path.resolve(__dirname,"init","mongodb.js"))
 
+//加载express
+$.init.load(path.resolve(__dirname,"init","express.js"));
+
+//加载路由
+$.init.load(path.resolve(__dirname,"routers"));
 //加载Models
 $.init.load(path.resolve(__dirname,"models"))
 $.init((err) => {
@@ -28,9 +33,9 @@ $.init((err) => {
 		console.log("init");
 	}
 });
- const item = new $.model.User({
- 	name : "py",
- 	password:"123456",
- 	nickname : "测试用户"
- });
- item.save(console.log)
+ // const item = new $.model.User({
+ // 	name : "py",
+ // 	password:"123456",
+ // 	nickname : "测试用户"
+ // });
+ // item.save(console.log)
