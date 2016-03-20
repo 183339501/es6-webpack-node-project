@@ -1,15 +1,23 @@
 'use strict'
-
+import createDebug from 'debug'
 import path from "path";
 import Projectcore from "project-core";
 
 const $ = global.$ = new Projectcore();
+
+//创建Debug函数
+
+$.createDebug = function (name) {
+	return createDebug("debuginfo:"+name);	
+}
+const debug = $.createDebug("server");
 
 //加载配置文件
 $.init.add((done) => {
 	$.config.load(path.resolve(__dirname,"config.js"));
 	const env = process.env.NODE_ENV||null;
 	if(env) {
+		debug("load env %s",env)
 		$.config.load(path.resolve(__dirname,"../config",env+".js"));
 	}
 	$.env = env;
