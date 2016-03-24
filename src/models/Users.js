@@ -7,7 +7,7 @@ module.exports = function (done) {
 	const ObjectId = Schema.ObjectId;
 	const User = new Schema({
 		name:{type:String,unique:true},
-		email : {type:String,unique:true}
+		email : {type:String,unique:true},
 		password:{type:String},
 		nickname :{type:String},
 		about : {type:String}

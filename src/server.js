@@ -42,7 +42,7 @@ $.init((err) => {
 	} else {
 		console.log("init");
 	}
-	require("./test");
+	// require("./test");
 });
 
  // const item = new $.model.User({
