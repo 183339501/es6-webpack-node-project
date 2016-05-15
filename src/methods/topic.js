@@ -7,7 +7,7 @@ import validator from "validator";
 module.exports = function (done) {
 
     $.method("topic.add").check({
-        authorId : {required:true,validate : (v) => validator.isMongoId(v)},
+        authorId : {required:true,validate : (v) => validator.isMongoId(String(v))},
         title: {required:true},
         content : {required:true},
         tags : {validate:(v) =>  Array.isArray(v)}
@@ -21,7 +21,7 @@ module.exports = function (done) {
 
 
     $.method("topic.get").check({
-        _id : {required:true,validate : (v) => validator.isMongoId(v)}
+        _id : {required:true,validate : (v) => validator.isMongoId(String(v))}
     });
 
     //获得单个帖子
@@ -30,7 +30,7 @@ module.exports = function (done) {
     });
 
     $.method("topic.list").check({
-        authorId : {validate : (v) => validator.isMongoId(v)},
+        authorId : {validate : (v) => validator.isMongoId(String(v))},
         tags : {validate : (v) => Array.isArray(v)},
         skip : {validate:(v) => v >= 0},
         limit: {validate:(v) => v > 0}
@@ -57,7 +57,7 @@ module.exports = function (done) {
     });
 
     $.method("topic.delete").check({
-        _id : {required:true,validate : (v) => validator.isMongoId(v)}
+        _id : {required:true,validate : (v) => validator.isMongoId(String(v))}
     });
 
     //删除帖子
@@ -66,7 +66,7 @@ module.exports = function (done) {
     });
 
     $.method("topic.update").check({
-        _id : {required:true,validate : (v) => validator.isMongoId(v)},
+        _id : {required:true,validate : (v) => validator.isMongoId(String(v))},
         tags : {validate : (v) => Array.isArray(v)}
     });
 
@@ -80,8 +80,8 @@ module.exports = function (done) {
     });
 
     $.method("topic.comment.add").check({
-        _id : {required:true,validate : (v) => validator.isMongoId(v)},
-        authorId : {required:true,validate : (v) => validator.isMongoId(v)},
+        _id : {required:true,validate : (v) => validator.isMongoId(String(v))},
+        authorId : {required:true,validate : (v) => validator.isMongoId(String(v))},
         content : {required:true}
     });
 
@@ -97,8 +97,8 @@ module.exports = function (done) {
         return $.model.Topic.update({_id:params._id},{$push:{comments:comment}})
     });
     $.method("topic.comment.get").check({
-        _id : {required:true,validate : (v) => validator.isMongoId(v)},
-        cid : {required:true,validate : (v) => validator.isMongoId(v)}
+        _id : {required:true,validate : (v) => validator.isMongoId(String(v))},
+        cid : {required:true,validate : (v) => validator.isMongoId(String(v))}
     });
 
     //获取评论
@@ -112,8 +112,8 @@ module.exports = function (done) {
     });
 
     $.method("topic.comment.delete").check({
-        _id : {required:true,validate : (v) => validator.isMongoId(v)},
-        cid : {required:true,validate : (v) => validator.isMongoId(v)}
+        _id : {required:true,validate : (v) => validator.isMongoId(String(v))},
+        cid : {required:true,validate : (v) => validator.isMongoId(String(v))}
     });
 
     //删除评论
@@ -121,7 +121,7 @@ module.exports = function (done) {
 
         return $.model.Topic.update({_id:params._id},{$pull:
             {
-                _id:params.cid
+               comments:{ _id:params.cid}
             }
         })
     });
