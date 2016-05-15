@@ -18,7 +18,7 @@ module.exports = function (done) {
 
 		req.session.user = user;
 		req.session.logout_token = $.utils.randomString(20);
-		res.json({success:true,token:req.session.logout_token});
+		res.apiSuccess({token:req.session.logout_token});
 		// }catch(err){
 			// next(err);
 		// }
@@ -32,13 +32,13 @@ module.exports = function (done) {
 
 		delete req.session.user;
 		delete req.session.logout_token;
-		res.json({success:"退出成功"});
+		res.apiSuccess({info:"退出成功"});
 	})
 
 	//用户注册
 	$.router.post("/api/signup",async function (req,res,next){
 		const user = await $.method("user.add").call(req.body);
-		res.json({user:user});
+		res.apiSuccess({user:user});
 	})
 	done()
 };
