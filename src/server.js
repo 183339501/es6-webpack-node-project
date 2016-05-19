@@ -27,7 +27,7 @@ $.init.add((done) => {
 		
 	}
 	$.env = env;
-	done()；
+	done();
 });
 //初始化MongodDB
 $.init.load(path.resolve(__dirname,"init","mongodb.js"))

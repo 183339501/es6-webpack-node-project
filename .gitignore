@@ -35,3 +35,4 @@ node_modules
 target
 config
 .idea/
+frontend/build

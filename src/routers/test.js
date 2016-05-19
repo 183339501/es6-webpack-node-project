@@ -1,10 +1,10 @@
 'use strict';
 
-
+const path = require("path");
 module.exports = function (done) {
 	$.router.get("/",function(req,res,next) {
 		
-		res.send(`现在是北京时间${new Date()}`)
+		res.sendFile(path.resolve(__dirname,"../../frontend/index.html"));
 	});
 	done()
 };

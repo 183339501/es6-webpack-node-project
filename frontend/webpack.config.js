@@ -3,11 +3,17 @@
  */
 'use strict';
 const path = require("path");
+const webpack = require("webpack");
 module.exports = {
-    entry: "./entry.js",
+    entry: [
+        'webpack-dev-server/client?http://0.0.0.0:3000', // WebpackDevServer host and port
+        'webpack/hot/only-dev-server',
+        "./entry.js"
+    ],
     output: {
         path: path.resolve(__dirname,'build'),
-        filename: "bundle.js"
+        filename: "bundle.js",
+        publicPath:"/build"
     },
     module: {
         loaders: [
@@ -15,10 +21,7 @@ module.exports = {
             {
                 test: /\.jsx?$/,
                 exclude: /(node_modules|bower_components)/,
-                loader: 'babel', // 'babel-loader' is also a legal name to reference
-                query: {
-                    presets: ['react', 'es2015']
-                }
+                loaders: ["react-hot",'babel'] // 'babel-loader' is also a legal name to reference
             },
             { test: /\.(woff|woff2)$/,  loader: "url-loader?limit=10000&mimetype=application/font-woff" },
             { test: /\.ttf$/,    loader: "file-loader" },
@@ -36,9 +39,15 @@ module.exports = {
         inline: true,
         historyApiFallback: true,
         stats: { colors: true },
-        /*hot: true,
+        hot: true,
         proxy: {
-            '*': 'http://127.0.0.1:3001',
-        }*/
-    }
+            '/api/*': 'http://127.0.0.1:3001'
+        }
+    },
+    babel:{
+        presets: ['react', 'es2015']
+    },
+    plugins: [
+        new webpack.HotModuleReplacementPlugin()
+    ]
 };
