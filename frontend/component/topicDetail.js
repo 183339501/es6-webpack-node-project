@@ -21,7 +21,7 @@ export default class TopicDetail extends React.Component{
     }
 
     render(){
-        const topic = this.state.topic
+        const topic = this.state.topic;
         if(!topic) {
             return (
                 <div className="panel panel-default">
@@ -38,7 +38,16 @@ export default class TopicDetail extends React.Component{
                 <div className="panel-body">
                     {topic.content}
                 </div>
+                <ul class="list-group">
+                    {topic.comments.map((item,i)=>{
+                        return (<li className="list-group-item" key={i}>
+                            {item.authorId}于{item.createdAt}说：
+                            <p>{item.content}</p>
+                        </li>)
+                    })}
+                </ul>
             </div>
+
         )
     }
 }

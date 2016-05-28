@@ -4,7 +4,7 @@
 module.exports = function (done) {
 	//当前登陆的用户信息
 	$.router.post("/api/login_user",async function(req,res,next) {
-		res.json({user:req.session.user,token:req.session.logout_token});
+		res.apiSuccess({user:req.session.user,token:req.session.logout_token});
 	});
 	//用户登陆
 	$.router.post("/api/login",async function(req,res,next) {
@@ -33,8 +33,14 @@ module.exports = function (done) {
 		delete req.session.user;
 		delete req.session.logout_token;
 		res.apiSuccess({info:"退出成功"});
-	})
+	});
 
+	//用户退出
+	$.router.post("/api/logout",async function (req,res,next){
+		delete req.session.user;
+		delete req.session.logout_token;
+		res.apiSuccess({info:"退出成功"});
+	});
 	//用户注册
 	$.router.post("/api/signup",async function (req,res,next){
 		const user = await $.method("user.add").call(req.body);

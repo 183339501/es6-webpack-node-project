@@ -35,10 +35,27 @@ export function request (method,path,data={}) {
     })
 }
 
+//获取帖子列表
 export function getTopicList (options) {
     return request("get","/topic/list",{});
 }
 
+//获取帖子详情
 export function getTopicDetail(id){
     return request("get",`/topic/item/${id}`);
+}
+
+//用户登陆
+export function login(name,password) {
+    return request("post",'/login',{name,password});
+}
+
+//当前登陆信息
+export function currentUser() {
+    return request("post","/login_user");
+}
+
+//注销
+export function logout(){
+    return request("post","/logout");
 }

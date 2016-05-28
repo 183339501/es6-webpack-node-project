@@ -16,8 +16,6 @@ export default class Footer extends React.Component{
                         <li>·</li>
                         <li><a href="javascript:;">关于</a></li>
                         <li>·</li>
-                        <li><a href="http://blog.getbootstrap.com">官方博客</a></li>
-                        <li>·</li>
                         <li><a href="https://github.com/183339501/praticle-node-project/issues">Issues</a></li>
                         <li>·</li>
                     </ul>
