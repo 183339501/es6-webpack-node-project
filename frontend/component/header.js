@@ -33,14 +33,14 @@ export default class Header extends React.Component{
                 <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul className="nav navbar-nav">
                         <li className="active"><Link to="/">主页</Link> <span className="sr-only">(current)</span></li>
-                        <li><a href="#">帮助中心</a></li>
+                        <li><Link to="/add_topic"><i className="glyphicon glyphicon-plus"></i>发帖</Link></li>
                     </ul>
                     {this.state.user?
                         (<ul className="nav navbar-nav navbar-right">
                             <li><a href="javascript:;"onClick={this.handleLogout.bind(this)}>注销[{this.state.user.nickname}]</a></li>
                         </ul>
                         ) :
-                        (<ul className="nav navbar-nav navbar-right"><li><Link to="/login">登陆</Link></li>
+                        (<ul className="nav navbar-nav navbar-right"><li><Link to="/login">登录</Link></li>
                         <li><a href="#">注册</a></li></ul>)}
                     </div>
                 </div>

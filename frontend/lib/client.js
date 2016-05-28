@@ -25,8 +25,8 @@ export function request (method,path,data={}) {
                 }catch(err) {
                     return reject(new Error("parse JSON data error "+err.message));
                 }
-                if(data.err) {
-                    reject(data.err);
+                if(data.error) {
+                    reject(data.error);
                 } else {
                     resolve(data.result);
                 }
@@ -58,4 +58,9 @@ export function currentUser() {
 //注销
 export function logout(){
     return request("post","/logout");
+}
+
+//发表新帖
+export function addTopic(title,tags,content) {
+    return request("post","/topic/add",{title,tags,content})
 }

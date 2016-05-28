@@ -8,11 +8,13 @@ import { Router, Route, Link, browserHistory } from 'react-router'
 import App from "./App"
 import TopicDetail from "./component/TopicDetail";
 import Login from "./component/Login";
+import AddTopic from "./component/AddTopic";
 
 ReactDOM.render((
     <Router history={browserHistory}>
         <Route path="/" component={App}>
             <Route path="/topic/:id" component={TopicDetail}></Route>
+            <Route path="/add_topic" component={AddTopic}></Route>
             <Route path="/login" component={Login}></Route>
         </Route>
     </Router>

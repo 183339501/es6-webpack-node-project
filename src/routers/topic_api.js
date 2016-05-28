@@ -11,7 +11,6 @@ module.exports = function (done) {
         if("tags" in req.body){
             req.body.tags = req.body.tags.split(",").map(v=> v.trim()).filter(v=>v);
         }
-        console.log(req.body.authorId);
         const topic = await $.method("topic.add").call(req.body);
         res.apiSuccess({topic:topic});
     });
