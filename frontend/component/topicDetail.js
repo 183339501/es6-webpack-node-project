@@ -3,6 +3,8 @@
  */
 import React from "react";
 import {getTopicDetail} from "../lib/client";
+import {markdownParse} from "../lib/utils";
+import "highlight.js/styles/github-gist.css";
 const mtStyle = {
     marginTop:20
 }
@@ -15,6 +17,7 @@ export default class TopicDetail extends React.Component{
     componentDidMount () {
         getTopicDetail(this.props.params.id)
             .then(ret=>{
+                ret.topic.html = markdownParse(ret.topic.content);
                 this.setState({topic:ret.topic})
             })
             .catch(err=>console.log(err));
@@ -35,8 +38,7 @@ export default class TopicDetail extends React.Component{
         return (
             <div className="panel panel-default" style={mtStyle}>
                 <div className="panel-heading">{topic.title}</div>
-                <div className="panel-body">
-                    {topic.content}
+                <div className="panel-body" dangerouslySetInnerHTML={{__html: topic.html}}>
                 </div>
                 <ul class="list-group">
                     {topic.comments.map((item,i)=>{
