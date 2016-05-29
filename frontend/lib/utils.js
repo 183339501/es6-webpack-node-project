@@ -10,9 +10,10 @@ marked.setOptions({
     }
 });
 const xssOptions = {
-    whiteList: Object.assign({}, xss.whiteList),
+    whiteList: Object.assign({}, xss.whiteList)
 };
 xssOptions.whiteList.code = ['class'];
+xssOptions.whiteList.p = ['class'];
 xssOptions.whiteList.span = ['class'];
 const myxss = new xss.FilterXSS(xssOptions);
 

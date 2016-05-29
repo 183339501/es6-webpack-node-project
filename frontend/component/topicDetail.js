@@ -3,9 +3,10 @@
  */
 import React from "react";
 import {Link} from 'react-router';
+import 'highlight.js/styles/github-gist.css';
 import {getTopicDetail} from "../lib/client";
 import {markdownParse} from "../lib/utils";
-import "highlight.js/styles/github-gist.css";
+
 const mtStyle = {
     marginTop:20
 }
@@ -26,6 +27,7 @@ export default class TopicDetail extends React.Component{
 
     render(){
         const topic = this.state.topic;
+        console.log(topic);
         if(!topic) {
             return (
                 <div className="panel panel-default">
@@ -42,6 +44,7 @@ export default class TopicDetail extends React.Component{
                 <div className="pull-right"><Link to={`/topic/${topic._id}/edit`}><i className="glyphicon glyphicon-edit"></i>编辑</Link></div>
                 </div>
                 <div className="panel-body" dangerouslySetInnerHTML={{__html: topic.html}}>
+
                 </div>
                 <h6>
                     <i className='glyphicon glyphicon-tags' style={{marginLeft:10,marginRight:20}}></i>

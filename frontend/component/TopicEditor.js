@@ -3,7 +3,7 @@
  */
 import React from "react";
 import jQuery from "jquery";
-
+import MarkDownEditor from "./MarkDownEditor";
 
 export default class TopicEditor extends React.Component{
     constructor(props) {
@@ -37,9 +37,10 @@ export default class TopicEditor extends React.Component{
                         </div>
                         <div className="form-group">
                             <label htmlFor="content">内容</label>
-                            <textarea rows="10" onChange={this.handleChange.bind(this,"content")} value={this.state.content} className="form-control"></textarea>
+                            <MarkDownEditor onChange={this.handleChange.bind(this,"content")} value={this.state.content}/>
 
                         </div>
+
                         <button type="button" className="btn btn-primary" onClick={this.handlePost.bind(this)}>发表</button>
                     </form>
                 </div>
