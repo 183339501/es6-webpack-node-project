@@ -9,6 +9,14 @@ marked.setOptions({
         return HighLight.highlightAuto(code).value;
     }
 });
+const xssOptions = {
+    whiteList: Object.assign({}, xss.whiteList),
+};
+xssOptions.whiteList.code = ['class'];
+xssOptions.whiteList.span = ['class'];
+const myxss = new xss.FilterXSS(xssOptions);
+
 export function markdownParse(text) {
-    return xss(marked(text));
+    return myxss.process(marked(text));
 }
+
