@@ -4,6 +4,18 @@
 import marked from 'marked';
 import HighLight from "highlight.js";
 import xss from "xss";
+
+marked.setOptions({
+    renderer: new marked.Renderer(),
+    gfm: true,
+    tables: true,
+    breaks: false,
+    pedantic: false,
+    sanitize: true,
+    smartLists: true,
+    smartypants: false
+});
+
 marked.setOptions({
     highlight: function (code) {
         return HighLight.highlightAuto(code).value;
