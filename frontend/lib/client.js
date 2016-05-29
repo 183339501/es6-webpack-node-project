@@ -76,5 +76,5 @@ export function addComment(id,content){
 }
 
 export function deleteComment(id,cid){
-    return request("post",`/topic/item/${id}/comment/delete`);
+    return request("post",`/topic/item/${id}/comment/delete`,{cid});
 }

@@ -27,6 +27,16 @@ export default class TopicDetail extends React.Component{
             })
             .catch(err=>console.log(err));
     }
+    handleDelete(cid) {
+        if (!confirm("确认删除吗？")) return;
+        deleteComment(this.props.params.id,cid)
+            .then(ret=>{
+                this.refresh();
+            })
+            .catch(err=>{
+                alert(err);
+            })
+    }
     render(){
         const topic = this.state.topic;
         if(!topic) {
@@ -67,6 +77,7 @@ export default class TopicDetail extends React.Component{
                     {topic.comments.map((item,i)=>{
                         return (<li className="list-group-item" key={i}>
                             {item.authorId}于{item.createdAt}说：
+                            <span className="pull-right"><button className="btn btn-xs btn-danger" onClick={this.handleDelete.bind(this,item._id)}><i className="glyphicon glyphicon-trash"></i></button></span>
                             <p dangerouslySetInnerHTML={{__html: markdownParse(item.content)}}></p>
                         </li>)
                     })}
