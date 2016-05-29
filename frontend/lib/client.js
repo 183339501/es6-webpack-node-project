@@ -50,6 +50,11 @@ export function login(name,password) {
     return request("post",'/login',{name,password});
 }
 
+//注册
+export function register(name,password,email,nickname){
+    return request("post","/signup",{name,password,email,nickname});
+}
+
 //当前登陆信息
 export function currentUser() {
     return request("post","/login_user");
@@ -75,6 +80,7 @@ export function addComment(id,content){
     return request("post",`/topic/item/${id}/comment/add`,{content})
 }
 
+//删除帖子
 export function deleteComment(id,cid){
     return request("post",`/topic/item/${id}/comment/delete`,{cid});
 }
