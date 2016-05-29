@@ -2,6 +2,7 @@
  * Created by pengyao on 16/5/19.
  */
 import React from "react";
+import {Link} from 'react-router';
 import {getTopicDetail} from "../lib/client";
 import {markdownParse} from "../lib/utils";
 import "highlight.js/styles/github-gist.css";
@@ -37,9 +38,17 @@ export default class TopicDetail extends React.Component{
         }
         return (
             <div className="panel panel-default" style={mtStyle}>
-                <div className="panel-heading">{topic.title}</div>
+                <div className="panel-heading">{topic.title}
+                <div className="pull-right"><Link to={`/topic/${topic._id}/edit`}><i className="glyphicon glyphicon-edit"></i>编辑</Link></div>
+                </div>
                 <div className="panel-body" dangerouslySetInnerHTML={{__html: topic.html}}>
                 </div>
+                <h6>
+                    <i className='glyphicon glyphicon-tags' style={{marginLeft:10,marginRight:20}}></i>
+                    {topic.tags.map((item,i) =>{
+                       return (<span className="label label-default" key={i}>{item}</span>)
+                    })}
+                </h6>
                 <ul class="list-group">
                     {topic.comments.map((item,i)=>{
                         return (<li className="list-group-item" key={i}>

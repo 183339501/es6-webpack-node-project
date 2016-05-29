@@ -11,7 +11,7 @@ export default class TopicEditor extends React.Component{
         this.state = props.topic||{}
     }
     handleChange(name,e){
-        this.state[name] = e.target.value;
+        this.setState({[name]:e.target.value});
     }
     handlePost(e){
         const $btn = jQuery(e.target);
@@ -28,16 +28,16 @@ export default class TopicEditor extends React.Component{
                     <form>
                         <div className="form-group">
                             <label htmlFor="title">标题</label>
-                            <input type="text" className="form-control" id="title" placeholder="标题" onChange={this.handleChange.bind(this,"title")}/>
+                            <input type="text" className="form-control" id="title" value={this.state.title} placeholder="标题" onChange={this.handleChange.bind(this,"title")}/>
                         </div>
                         <div class="form-group">
                             <label htmlFor="tags">标签</label>
-                            <input type="text" className="form-control" id="tags" placeholder="标签" onChange={this.handleChange.bind(this,"tags")}/>
+                            <input type="text" className="form-control" id="tags" placeholder="标签" value={this.state.tags}  onChange={this.handleChange.bind(this,"tags")}/>
                             <p className="help-block">多个标签使用半角逗号分隔</p>
                         </div>
                         <div className="form-group">
                             <label htmlFor="content">内容</label>
-                            <textarea row="10" onChange={this.handleChange.bind(this,"content")} className="form-control"></textarea>
+                            <textarea rows="10" onChange={this.handleChange.bind(this,"content")} value={this.state.content} className="form-control"></textarea>
 
                         </div>
                         <button type="button" className="btn btn-primary" onClick={this.handlePost.bind(this)}>发表</button>

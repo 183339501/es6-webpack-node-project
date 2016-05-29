@@ -9,11 +9,12 @@ import App from "./App"
 import TopicDetail from "./component/TopicDetail";
 import Login from "./component/Login";
 import AddTopic from "./component/AddTopic";
-
+import TopicUpdate from "./component/TopicUpdate";
 ReactDOM.render((
     <Router history={browserHistory}>
         <Route path="/" component={App}>
             <Route path="/topic/:id" component={TopicDetail}></Route>
+            <Route path="/topic/:id/edit" component={TopicUpdate}></Route>
             <Route path="/add_topic" component={AddTopic}></Route>
             <Route path="/login" component={Login}></Route>
         </Route>

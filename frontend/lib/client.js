@@ -64,3 +64,8 @@ export function logout(){
 export function addTopic(title,tags,content) {
     return request("post","/topic/add",{title,tags,content})
 }
+
+//更新帖子
+export function updateTopic(id,title,tags,content) {
+    return request("post",`/topic/item/${id}`,{title,tags,content});
+}
