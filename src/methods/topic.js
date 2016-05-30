@@ -29,6 +29,7 @@ module.exports = function (done) {
         return $.model.Topic.findOne({_id : params._id});
     });
 
+    //帖子列表
     $.method("topic.list").check({
         authorId : {validate : (v) => validator.isMongoId(String(v))},
         tags : {validate : (v) => Array.isArray(v)},
@@ -52,6 +53,22 @@ module.exports = function (done) {
         if(params.skip) ret.skip(Number(params.skip));
 
         if(params.limit) ret.limit(Number(params.limit))
+
+        return ret
+    });
+
+    //获取帖子总数
+    $.method("topic.count").check({
+        authorId : {validate : (v) => validator.isMongoId(String(v))},
+        tags : {validate : (v) => Array.isArray(v)},
+    });
+
+    //获取帖子总数
+    $.method("topic.count").register(async function (params) {
+        const query = {};
+        if (params.authorId) query.authorId = params.authorId
+        if(params.tags) query.tags = {$all:params.tags};
+        const ret = $.model.Topic.count(query);
 
         return ret
     });

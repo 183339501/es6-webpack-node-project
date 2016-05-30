@@ -20,8 +20,15 @@ module.exports = function (done) {
         if("tags" in req.body){
             req.body.tags = req.body.tags.split(",").map(v=> v.trim()).filter(v=>v);
         }
+
+        var page = parseInt(req.query.page,10);
+        if(!(page>1)) page = 1;
+        req.query.limit = 10;
+        req.query.skip = (page - 1) * req.query.limit;
+        const count = await $.method("topic.count").call(req.query);
+        const pageSize = Math.ceil(count/req.query.limit);
         const list = await $.method("topic.list").call(req.query)
-        res.apiSuccess({list:list});
+        res.apiSuccess({count,pageSize,page,list});
     });
 
     //获取帖子
