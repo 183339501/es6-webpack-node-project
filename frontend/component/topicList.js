@@ -14,15 +14,24 @@ export default class TopicList extends React.Component{
     }
 
     componentDidMount () {
-        getTopicList({})
+        this.updateTopicList({page:this.props.location.query.page});
+    }
+    componentWillReceiveProps(nextProps) {
+        this.updateTopicList({page:nextProps.location.query.page});
+    }
+    updateTopicList(query) {
+        getTopicList(query)
             .then(ret=>{
-                this.setState({list:ret.list})
+                this.setState(ret);
             })
             .catch(err=>console.log(err));
     }
 
     render(){
         const list = Array.isArray(this.state.list)?this.state.list:[];
+        var prevPage = this.state.page-1;
+        if(prevPage<1) prevPage = 1;
+        var nextPage = this.state.pageSize===this.state.page?this.state.page:this.state.page+1;
         return (
             <div style={mtStyle}>
                 <ul className="list-group">
@@ -33,6 +42,12 @@ export default class TopicList extends React.Component{
                         )
                     })}
                 </ul>
+                <nav>
+                    <ul className="pager">
+                        <li><Link to={`/?page=${prevPage}`}>上一页</Link></li>
+                        <li><Link to={`/?page=${nextPage}`}>下一页</Link></li>
+                    </ul>
+                </nav>
             </div>
         )
     }

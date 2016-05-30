@@ -23,7 +23,7 @@ module.exports = function (done) {
 
         var page = parseInt(req.query.page,10);
         if(!(page>1)) page = 1;
-        req.query.limit = 10;
+        req.query.limit = 5;
         req.query.skip = (page - 1) * req.query.limit;
         const count = await $.method("topic.count").call(req.query);
         const pageSize = Math.ceil(count/req.query.limit);

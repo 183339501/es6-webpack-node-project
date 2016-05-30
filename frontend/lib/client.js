@@ -37,7 +37,7 @@ export function request (method,path,data={}) {
 
 //获取帖子列表
 export function getTopicList (options) {
-    return request("get","/topic/list",{});
+    return request("get","/topic/list",options);
 }
 
 //获取帖子详情
