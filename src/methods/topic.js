@@ -7,7 +7,7 @@ import validator from "validator";
 module.exports = function (done) {
 
     $.method("topic.add").check({
-        authorId : {required:true,validate : (v) => validator.isMongoId(String(v))},
+        author : {required:true,validate : (v) => validator.isMongoId(String(v))},
         title: {required:true},
         content : {required:true},
         tags : {validate:(v) =>  Array.isArray(v)}
@@ -26,12 +26,20 @@ module.exports = function (done) {
 
     //获得单个帖子
     $.method("topic.get").register(async function (params) {
-        return $.model.Topic.findOne({_id : params._id});
+        return $.model.Topic.findOne({_id : params._id}).populate({
+            path:"author",
+            model:"User",
+            select:"nickname"
+        }).populate({
+            path:"comments.author",
+            model:"User",
+            select:"nickname"
+        });;
     });
 
     //帖子列表
     $.method("topic.list").check({
-        authorId : {validate : (v) => validator.isMongoId(String(v))},
+        author : {validate : (v) => validator.isMongoId(String(v))},
         tags : {validate : (v) => Array.isArray(v)},
         skip : {validate:(v) => v >= 0},
         limit: {validate:(v) => v > 0}
@@ -40,14 +48,18 @@ module.exports = function (done) {
     //帖子列表
     $.method("topic.list").register(async function (params) {
         const query = {};
-        if (params.authorId) query.authorId = params.authorId
+        if (params.author) query.author = params.author
         if(params.tags) query.tags = {$all:params.tags};
         const ret = $.model.Topic.find(query,{
-            authorId:1,
+            author:1,
             title:1,
             createdAt:1,
             updatedAt :1,
             lastCommentedAt:1
+        }).populate({
+            path:"author",
+            model:"User",
+            select:"nickname"
         });
 
         if(params.skip) ret.skip(Number(params.skip));
@@ -59,14 +71,14 @@ module.exports = function (done) {
 
     //获取帖子总数
     $.method("topic.count").check({
-        authorId : {validate : (v) => validator.isMongoId(String(v))},
+        author : {validate : (v) => validator.isMongoId(String(v))},
         tags : {validate : (v) => Array.isArray(v)},
     });
 
     //获取帖子总数
     $.method("topic.count").register(async function (params) {
         const query = {};
-        if (params.authorId) query.authorId = params.authorId
+        if (params.author) query.author = params.author
         if(params.tags) query.tags = {$all:params.tags};
         const ret = $.model.Topic.count(query);
 
@@ -98,7 +110,7 @@ module.exports = function (done) {
 
     $.method("topic.comment.add").check({
         _id : {required:true,validate : (v) => validator.isMongoId(String(v))},
-        authorId : {required:true,validate : (v) => validator.isMongoId(String(v))},
+        author : {required:true,validate : (v) => validator.isMongoId(String(v))},
         content : {required:true}
     });
 
@@ -106,7 +118,7 @@ module.exports = function (done) {
     $.method("topic.comment.add").register(async function (params) {
         const comment = {
             cid : new $.utils.ObjectId(),
-            authorId : params.authorId,
+            author : params.author,
             content : params.content,
             createdAt : new Date()
         };

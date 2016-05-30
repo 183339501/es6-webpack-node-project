@@ -7,7 +7,7 @@
 module.exports = function (done) {
     //发表帖子
     $.router.post("/api/topic/add", $.checkLogin,async function(req,res,next) {
-        req.body.authorId = req.session.user._id;
+        req.body.author = req.session.user._id;
         if("tags" in req.body){
             req.body.tags = req.body.tags.split(",").map(v=> v.trim()).filter(v=>v);
         }
@@ -58,7 +58,7 @@ module.exports = function (done) {
     //评论
     $.router.post("/api/topic/item/:topic_id/comment/add",$.checkLogin,async function (req,res,next) {
         req.body._id = req.params.topic_id;
-        req.body.authorId = req.session.user._id;
+        req.body.author = req.session.user._id;
         const comments = await $.method("topic.comment.add").call(req.body);
         res.apiSuccess({comments});
     });
@@ -72,7 +72,7 @@ module.exports = function (done) {
         const comment = await $.method('topic.comment.get').call(query);
         if (comment && comment.comments && comment.comments[0]) {
             const item = comment.comments[0];
-            if (item.authorId.toString() === req.session.user._id.toString()) {
+            if (item.author.toString() === req.session.user._id.toString()) {
                 await $.method('topic.comment.delete').call(query);
             } else {
                 return next(new Error('access denied'));

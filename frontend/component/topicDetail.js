@@ -54,6 +54,7 @@ export default class TopicDetail extends React.Component{
                 <div className="panel-heading">{topic.title}
                 <div className="pull-right"><Link to={`/topic/${topic._id}/edit`}><i className="glyphicon glyphicon-edit"></i>编辑</Link></div>
                 </div>
+                <p>{topic.author.nickname}发表于{topic.createdAt}</p>
                 <div className="panel-body" dangerouslySetInnerHTML={{__html: topic.html}}>
 
                 </div>
@@ -76,7 +77,7 @@ export default class TopicDetail extends React.Component{
                 <ul class="list-group">
                     {topic.comments.map((item,i)=>{
                         return (<li className="list-group-item" key={i}>
-                            {item.authorId}于{item.createdAt}说：
+                            {item.author.nickname}于{item.createdAt}说：
                             <span className="pull-right"><button className="btn btn-xs btn-danger" onClick={this.handleDelete.bind(this,item._id)}><i className="glyphicon glyphicon-trash"></i></button></span>
                             <p dangerouslySetInnerHTML={{__html: markdownParse(item.content)}}></p>
                         </li>)
