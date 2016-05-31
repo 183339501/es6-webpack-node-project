@@ -35,7 +35,22 @@ module.exports = function (done) {
     $.router.get("/api/topic/item/:topic_id",async function (req,res,next) {
         const topic = await $.method("topic.get").call({_id:req.params.topic_id});
         if(!topic) return next(new Error(`topic ${req.params.topic_id} does not exists` ));
-        res.apiSuccess({topic:topic});
+
+        const userId = req.session.user&&req.session.user._id&&req.session.user._id.toString();
+        const isAdmin = req.session.user&&req.session.user.isAdmin;
+
+        const result = {};
+        result.topic = $.utils.cloneObject(topic);
+        result.topic.permission = {
+            edit:isAdmin||userId === result.topic.author._id,
+            delete: isAdmin || userId === result.topic.author._id,
+        }
+        result.topic.comments.forEach(item => {
+            item.permission = {
+                delete: isAdmin || userId === item.author._id,
+            };
+        });
+        res.apiSuccess(result);
     });
 
     //更新帖子
@@ -72,7 +87,7 @@ module.exports = function (done) {
         const comment = await $.method('topic.comment.get').call(query);
         if (comment && comment.comments && comment.comments[0]) {
             const item = comment.comments[0];
-            if (item.author.toString() === req.session.user._id.toString()) {
+            if (item.author._id.toString() === req.session.user._id.toString()||req.session.user.isAdmin) {
                 await $.method('topic.comment.delete').call(query);
             } else {
                 return next(new Error('access denied'));

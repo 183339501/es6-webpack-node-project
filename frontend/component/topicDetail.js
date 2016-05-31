@@ -63,8 +63,14 @@ export default class TopicDetail extends React.Component{
             <div className="panel panel-default" style={mtStyle}>
                 <div className="panel-heading">{topic.title}
                     <div className="pull-right">
-                        <Link to={`/topic/${topic._id}/edit`}><i className="glyphicon glyphicon-edit"></i>编辑</Link>&nbsp;&nbsp;
-                        <button className="btn btn-xs btn-danger"><i className="glyphicon glyphicon-trash" onClick={this.handleDeleteTopic.bind(this)}></i>删除</button>
+                        {!topic.permission.edit?null:
+                            <Link to={`/topic/${topic._id}/edit`}><i className="glyphicon glyphicon-edit"></i>编辑</Link>
+                        }&nbsp;&nbsp;
+                        {!topic.permission.delete ? null :
+                            <button className="btn btn-xs btn-danger">
+                                <i className="glyphicon glyphicon-trash" onClick={this.handleDeleteTopic.bind(this)}></i>删除
+                            </button>
+                        }
                     </div>
                 </div>
                 <p>{topic.author.nickname}发表于{topic.createdAt}</p>
@@ -91,7 +97,7 @@ export default class TopicDetail extends React.Component{
                     {topic.comments.map((item,i)=>{
                         return (<li className="list-group-item" key={i}>
                             {item.author.nickname}于{item.createdAt}说：
-                            <span className="pull-right"><button className="btn btn-xs btn-danger" onClick={this.handleDelete.bind(this,item._id)}><i className="glyphicon glyphicon-trash"></i></button></span>
+                            {!item.permission.delete?null:<span className="pull-right"><button className="btn btn-xs btn-danger" onClick={this.handleDelete.bind(this,item._id)}><i className="glyphicon glyphicon-trash"></i></button></span>}
                             <p dangerouslySetInnerHTML={{__html: markdownParse(item.content)}}></p>
                         </li>)
                     })}
