@@ -87,7 +87,7 @@ module.exports = function (done) {
         const comment = await $.method('topic.comment.get').call(query);
         if (comment && comment.comments && comment.comments[0]) {
             const item = comment.comments[0];
-            if (item.author._id.toString() === req.session.user._id.toString()||req.session.user.isAdmin) {
+            if (item.author.toString() === req.session.user._id.toString()||req.session.user.isAdmin) {
                 await $.method('topic.comment.delete').call(query);
             } else {
                 return next(new Error('access denied'));
