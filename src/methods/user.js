@@ -19,7 +19,14 @@ module.exports = function (done) {
 			if(user) throw new Error(`user ${params.email} already exists`);
 		}
 		params.password = $.utils.encryptPassword(params.password.toString());
-		const user = $.model.User(params);
+
+		const user = $.model.User({
+			name:params.name,
+			nickname:params.nickname,
+			email:params.email,
+			about:params.about,
+			password:params.password
+		});
 		return user.save();
 	});
 	$.method("user.get").check({
