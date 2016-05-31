@@ -60,6 +60,11 @@ export function currentUser() {
     return request("post","/login_user");
 }
 
+//修改用户信息
+export function profile(email,nickname,about){
+    return request("post","/profile",{email,nickname,about});
+}
+
 //注销
 export function logout(){
     return request("post","/logout");

@@ -45,6 +45,24 @@ module.exports = function (done) {
 	$.router.post("/api/signup",async function (req,res,next){
 		const user = await $.method("user.add").call(req.body);
 		res.apiSuccess({user:user});
-	})
+	});
+
+	//用户信息修改
+	$.router.post("/api/profile",$.checkLogin,async function (req,res,next){
+		var update = {
+			_id : req.session.user._id
+		};
+		if("email" in req.body) update.email = req.body.email
+		if("nickname" in req.body) update.nickname = req.body.nickname
+		if("about" in req.body) update.about = req.body.about;
+
+		const ret = await $.method("user.update").call(update);
+
+		const user = await $.method("user.get").call({_id:req.session.user._id});
+		req.session.user.email = user.email;
+		req.session.user.nickname = user.nickname;
+		req.session.user.about = user.about;
+		res.apiSuccess(user);
+	});
 	done()
 };

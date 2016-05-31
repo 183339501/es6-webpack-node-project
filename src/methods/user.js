@@ -43,7 +43,7 @@ module.exports = function (done) {
 	})
 
 	$.method("user.update").check({
-		_id : {validate : (v) => validator.isMongodId(v)},
+		_id : {validate : (v) => validator.isMongoId(v)},
 		name : {validate : (v) => validator.isLength(v,{min:4,max:20})&&/^[a-zA-Z]/.test(v)},
 		email : {validate : (v) => validator.isEmail(v)}
 	})
