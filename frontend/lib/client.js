@@ -85,7 +85,12 @@ export function addComment(id,content){
     return request("post",`/topic/item/${id}/comment/add`,{content})
 }
 
-//删除帖子
+//删除评论
 export function deleteComment(id,cid){
     return request("post",`/topic/item/${id}/comment/delete`,{cid});
+}
+
+//删除主题
+export function deleteTopic (id) {
+    return request("delete",`topic/item/${id}`);
 }

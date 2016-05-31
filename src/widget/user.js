@@ -16,7 +16,7 @@ module.exports = function (done) {
     $.checkTopicAuthor = async function (req,res,next) {
         const topic = await $.method("topic.get").call({_id:req.params.topic_id});
         if(!topic) return next(new Error(`topic ${req.params.topic_id} does not exists` ));
-        if(topic.authorId.toString() != req.session.user._id.toString()){
+        if(topic.author._id.toString() != req.session.user._id.toString()){
             return next(new Error("没有权限"))
         }
         req.topic = topic;

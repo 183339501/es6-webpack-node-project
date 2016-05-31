@@ -4,7 +4,7 @@
 import React from "react";
 import {Link} from 'react-router';
 import 'highlight.js/styles/github-gist.css';
-import {getTopicDetail,addComment,deleteComment} from "../lib/client";
+import {getTopicDetail,addComment,deleteComment,deleteTopic} from "../lib/client";
 import {markdownParse} from "../lib/utils";
 import CommentEditor from "./CommentEditor"
 const mtStyle = {
@@ -37,6 +37,16 @@ export default class TopicDetail extends React.Component{
                 alert(err);
             })
     }
+    handleDeleteTopic() {
+        if (!confirm("确认删除主题吗？")) return;
+        deleteTopic(this.props.params.id)
+            .then(()=>{
+                location = "/"
+            })
+            .catch(err =>{
+                alert(err)
+            })
+    }
     render(){
         const topic = this.state.topic;
         if(!topic) {
@@ -52,7 +62,10 @@ export default class TopicDetail extends React.Component{
         return (
             <div className="panel panel-default" style={mtStyle}>
                 <div className="panel-heading">{topic.title}
-                <div className="pull-right"><Link to={`/topic/${topic._id}/edit`}><i className="glyphicon glyphicon-edit"></i>编辑</Link></div>
+                    <div className="pull-right">
+                        <Link to={`/topic/${topic._id}/edit`}><i className="glyphicon glyphicon-edit"></i>编辑</Link>&nbsp;&nbsp;
+                        <button className="btn btn-xs btn-danger"><i className="glyphicon glyphicon-trash" onClick={this.handleDeleteTopic.bind(this)}></i>删除</button>
+                    </div>
                 </div>
                 <p>{topic.author.nickname}发表于{topic.createdAt}</p>
                 <div className="panel-body" dangerouslySetInnerHTML={{__html: topic.html}}>
