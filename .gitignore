@@ -36,3 +36,4 @@ target
 config
 .idea/
 frontend/build
+redis-stable
