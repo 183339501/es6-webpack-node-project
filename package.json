@@ -54,6 +54,7 @@
     "highlight.js": "^9.4.0",
     "imports-loader": "^0.6.5",
     "install": "^0.6.1",
+    "ioredis": "^2.0.1",
     "jquery": "^2.2.3",
     "less": "^2.7.1",
     "less-loader": "^2.2.3",

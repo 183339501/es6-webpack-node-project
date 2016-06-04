@@ -10,6 +10,13 @@ module.exports = function (done) {
 	$.router.post("/api/login",async function(req,res,next) {
 		// try{
 		if(!req.body.password) return next(new Error("请输入密码"));
+		//添加频率限制
+		const key = `login:${req.body.name}:${$.utils.date("Ymd")}`;
+		{
+			const limit = 5;
+			const ok = await $.limiter.incr(key,limit);
+			if(!ok) throw new Error("out of limit");
+		}
 		const user = await $.method("user.get").call(req.body);
 		if(!user) return next(new Error('用户不存在'));
 		if(!$.utils.validatePassword(req.body.password,user.password)){
@@ -18,6 +25,7 @@ module.exports = function (done) {
 
 		req.session.user = user;
 		req.session.logout_token = $.utils.randomString(20);
+		await $.limiter.reset(key);
 		res.apiSuccess({token:req.session.logout_token});
 		// }catch(err){
 			// next(err);
@@ -44,6 +52,14 @@ module.exports = function (done) {
 	//用户注册
 	$.router.post("/api/signup",async function (req,res,next){
 		const user = await $.method("user.add").call(req.body);
+		//添加频率限制
+		{
+			const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+			const key = `signup:${ip}:${$.utils.date("Ymd")}`;
+			const limit = 2;
+			const ok = await $.limiter.incr(key,limit);
+			if(!ok) throw new Error("out of limit");
+		}
 		res.apiSuccess({user:user});
 	});
 

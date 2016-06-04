@@ -8,6 +8,13 @@ module.exports = function (done) {
     //发表帖子
     $.router.post("/api/topic/add", $.checkLogin,async function(req,res,next) {
         req.body.author = req.session.user._id;
+        //添加频率限制
+        {
+            const key = `addtopic:${req.body.author}:${$.utils.date("YmdH")}`;
+            const limit = 2;
+            const ok = await $.limiter.incr(key,limit);
+            if(!ok) throw new Error("out of limit");
+        }
         if("tags" in req.body){
             req.body.tags = req.body.tags.split(",").map(v=> v.trim()).filter(v=>v);
         }
@@ -74,6 +81,13 @@ module.exports = function (done) {
     $.router.post("/api/topic/item/:topic_id/comment/add",$.checkLogin,async function (req,res,next) {
         req.body._id = req.params.topic_id;
         req.body.author = req.session.user._id;
+        //添加频率限制
+        {
+            const key = `addcomment:${req.body.author}:${$.utils.date("YmdH")}`;
+            const limit = 20;
+            const ok = await $.limiter.incr(key,limit);
+            if(!ok) throw new Error("out of limit");
+        }
         const comments = await $.method("topic.comment.add").call(req.body);
         res.apiSuccess({comments});
     });
