@@ -38,6 +38,7 @@ module.exports = function (done) {
         res.apiSuccess({count,list});
     });
 
+    //设置消息通知状态
     $.router.get("/api/notification/:id/read",$.checkLogin,async function (req,res,next){
 
         const ret = await $.method("notification.setRead").call({
