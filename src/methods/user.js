@@ -53,7 +53,9 @@ module.exports = function (done) {
 		_id : {validate : (v) => validator.isMongoId(v)},
 		name : {validate : (v) => validator.isLength(v,{min:4,max:20})&&/^[a-zA-Z]/.test(v)},
 		email : {validate : (v) => validator.isEmail(v)}
-	})
+	});
+
+	//用户信息修改
 	$.method("user.update").register(async function (params){
 		const update = {};
 		const user = await $.method("user.get").call(params);
@@ -68,6 +70,16 @@ module.exports = function (done) {
 		if(params.nickname && user.nickname !== params.nickname) update.nickname = params.nickname;
 		if(params.about && user.about !== params.about) update.about = params.about;
 		return $.model.User.update({_id:user._id},{$set:update});
+	});
+
+	$.method("user.incrScore").check({
+		_id : {validate : (v) => validator.isMongoId(v)},
+		score:{validate:(v)=>!isNaN(v),required:true}
+	});
+
+	//用户积分
+	$.method("user.incrScore").register(async function (params){
+		return $.model.User.update({_id:params._id},{$inc:{score:params.score}});
 	});
 	done();
 };

@@ -14,7 +14,7 @@ module.exports = function (done) {
 		if(ret>limit) return false;
 		return true;
 	}
-	$.limiter.reset = async function () {
+	$.limiter.reset = async function (key) {
 		debug('reset key=%s',key);
 		return connection.del(prefix+key);
 	}

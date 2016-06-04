@@ -19,6 +19,7 @@ module.exports = function (done) {
             req.body.tags = req.body.tags.split(",").map(v=> v.trim()).filter(v=>v);
         }
         const topic = await $.method("topic.add").call(req.body);
+        await $.method("user.incrScore").call({_id:req.body.author,score:5});
         res.apiSuccess({topic:topic});
     });
 
@@ -90,6 +91,7 @@ module.exports = function (done) {
             if(!ok) throw new Error("out of limit");
         }
         const comments = await $.method("topic.comment.add").call(req.body);
+        await $.method("user.incrScore").call({_id:req.body.author,score:1});
         res.apiSuccess({comments});
     });
 

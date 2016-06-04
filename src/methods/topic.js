@@ -110,8 +110,7 @@ module.exports = function (done) {
     });
 
     $.method("topic.incPageView").check({
-        _id : {required:true,validate : (v) => validator.isMongoId(String(v))},
-        tags : {validate : (v) => Array.isArray(v)}
+        _id : {required:true,validate : (v) => validator.isMongoId(String(v))}
     });
 
     //更新帖子阅读量
