@@ -94,3 +94,18 @@ export function deleteComment(id,cid){
 export function deleteTopic (id) {
     return request("delete",`topic/item/${id}`);
 }
+
+//获取消息通知总数
+export function notificationCount (isRead){
+    return request("get","notification/count",{isRead});
+}
+
+//获取消息通知列表
+export function notificationList () {
+    return request("get","notification/list");
+}
+
+//更新消息通知列表
+export function setRead(id) {
+    return request("get",`notification/${id}/read`)
+}
