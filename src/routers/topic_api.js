@@ -50,13 +50,14 @@ module.exports = function (done) {
         result.topic = $.utils.cloneObject(topic);
         result.topic.permission = {
             edit:isAdmin||userId === result.topic.author._id,
-            delete: isAdmin || userId === result.topic.author._id,
+            delete: isAdmin || userId === result.topic.author._id
         }
         result.topic.comments.forEach(item => {
             item.permission = {
-                delete: isAdmin || userId === item.author._id,
+                delete: isAdmin || userId === item.author._id
             };
         });
+        await $.method("topic.incPageView").call({_id:req.params.topic_id});
         res.apiSuccess(result);
     });
 

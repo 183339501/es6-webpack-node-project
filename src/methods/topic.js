@@ -55,7 +55,8 @@ module.exports = function (done) {
             title:1,
             createdAt:1,
             updatedAt :1,
-            lastCommentedAt:1
+            lastCommentedAt:1,
+            pageView:1
         }).populate({
             path:"author",
             model:"User",
@@ -106,6 +107,16 @@ module.exports = function (done) {
         if(params.content) update.content = params.content;
         if(params.tags) update.tags = params.tags;
         return $.model.Topic.update({_id:params._id},{$set:update});
+    });
+
+    $.method("topic.incPageView").check({
+        _id : {required:true,validate : (v) => validator.isMongoId(String(v))},
+        tags : {validate : (v) => Array.isArray(v)}
+    });
+
+    //更新帖子阅读量
+    $.method("topic.incPageView").register(async function (params) {
+        return $.model.Topic.update({_id:params._id},{$inc:{pageView:1}});
     });
 
     $.method("topic.comment.add").check({
