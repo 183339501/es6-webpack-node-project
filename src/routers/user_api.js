@@ -60,6 +60,14 @@ module.exports = function (done) {
 			const ok = await $.limiter.incr(key,limit);
 			if(!ok) throw new Error("out of limit");
 		}
+		$.method("mail.sendTemplate").call({
+			to:user.email,
+			subject:"欢迎",
+			template:"welcome",
+			data:user
+		},err=>{
+			if(err) console.log(err);
+		});
 		res.apiSuccess({user:user});
 	});
 
