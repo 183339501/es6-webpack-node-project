@@ -13,16 +13,18 @@ import TopicUpdate from "./component/TopicUpdate";
 import Register from "./component/Register";
 import Profile from "./component/Profile";
 import Notification from "./component/Notification";
+import ResetPassword from "./component/ResetPassword";
 ReactDOM.render((
     <Router history={browserHistory}>
         <Route path="/" component={App}>
-            <Route path="/topic/:id" component={TopicDetail}></Route>
-            <Route path="/topic/:id/edit" component={TopicUpdate}></Route>
-            <Route path="/add_topic" component={AddTopic}></Route>
-            <Route path="/register" component={Register}></Route>
-            <Route path="/profile" component={Profile}></Route>
-            <Route path="/notification" component={Notification}></Route>
-            <Route path="/login" component={Login}></Route>
+            <Route path="topic/:id" component={TopicDetail}></Route>
+            <Route path="topic/:id/edit" component={TopicUpdate}></Route>
+            <Route path="add_topic" component={AddTopic}></Route>
+            <Route path="register" component={Register}></Route>
+            <Route path="profile" component={Profile}></Route>
+            <Route path="notification" component={Notification}></Route>
+            <Route path="reset_password" component={ResetPassword}></Route>
+            <Route path="login" component={Login}></Route>
         </Route>
     </Router>
 ),document.getElementById("app"));

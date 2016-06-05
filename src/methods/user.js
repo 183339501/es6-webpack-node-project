@@ -30,7 +30,7 @@ module.exports = function (done) {
 		return user.save();
 	});
 	$.method("user.get").check({
-		_id : {validate : (v) => validator.isMongoId(v)},
+		_id : {validate : (v) => validator.isMongoId(String(v))},
 		name : {validate : (v) => validator.isLength(v,{min:4,max:20})&&/^[a-zA-Z]/.test(v)},
 		email : {validate : (v) => validator.isEmail(v)}
 	});
@@ -50,7 +50,7 @@ module.exports = function (done) {
 	})
 
 	$.method("user.update").check({
-		_id : {validate : (v) => validator.isMongoId(v)},
+		_id : {validate : (v) => validator.isMongoId(String(v))},
 		name : {validate : (v) => validator.isLength(v,{min:4,max:20})&&/^[a-zA-Z]/.test(v)},
 		email : {validate : (v) => validator.isEmail(v)}
 	});
@@ -66,14 +66,14 @@ module.exports = function (done) {
 
 		if(params.name && user.name !== params.name) update.name = params.name;
 		if(params.email && user.email!== params.email) update.email= params.email;
-		if(params.password && user.password !== params.password) update.password = params.password;
+		if(params.password && user.password !== params.password) update.password = $.utils.encryptPassword(params.password);
 		if(params.nickname && user.nickname !== params.nickname) update.nickname = params.nickname;
 		if(params.about && user.about !== params.about) update.about = params.about;
 		return $.model.User.update({_id:user._id},{$set:update});
 	});
 
 	$.method("user.incrScore").check({
-		_id : {validate : (v) => validator.isMongoId(v)},
+		_id : {validate : (v) => validator.isMongoId(String(v))},
 		score:{validate:(v)=>!isNaN(v),required:true}
 	});
 

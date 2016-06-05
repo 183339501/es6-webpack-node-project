@@ -45,7 +45,7 @@ $.init.load(path.resolve(__dirname,"routers"));
 //加载频率限制
 $.init.load(path.resolve(__dirname,"init","limiter.js"));
 
-
+$.init.load(path.resolve(__dirname,"init","validcode.js"));
 $.init((err) => {
 	if(err) {
 		console.log(err);

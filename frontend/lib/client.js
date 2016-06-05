@@ -109,3 +109,13 @@ export function notificationList () {
 export function setRead(id) {
     return request("get",`notification/${id}/read`)
 }
+
+//发送邮箱验证码
+export function sendCode(email){
+    return request("post","reset_password_send_code",{email})
+}
+
+//修改密码
+export function resetPassword(code,email,password){
+    return request("post","reset_password",{code,email,password});
+}

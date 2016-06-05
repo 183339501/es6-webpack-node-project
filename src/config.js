@@ -16,5 +16,12 @@ module.exports = function (set,get,has) {
 		host:"127.0.0.1",
 		port:6379,
 		prefix:"L:"
+	});
+
+	//validcode redis connection
+	set("validcode.redis",{
+		host:"127.0.0.1",
+		port:6379,
+		prefix:"V:"
 	})
 }

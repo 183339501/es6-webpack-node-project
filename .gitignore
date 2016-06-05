@@ -37,3 +37,4 @@ config
 .idea/
 frontend/build
 redis-stable
+*.rdb
