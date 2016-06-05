@@ -52,42 +52,42 @@ export function login(name,password) {
 
 //注册
 export function register(name,password,email,nickname){
-    return request("post","/signup",{name,password,email,nickname});
+    return request("post","signup",{name,password,email,nickname});
 }
 
 //当前登陆信息
 export function currentUser() {
-    return request("post","/login_user");
+    return request("post","login_user");
 }
 
 //修改用户信息
 export function profile(email,nickname,about){
-    return request("post","/profile",{email,nickname,about});
+    return request("post","profile",{email,nickname,about});
 }
 
 //注销
 export function logout(){
-    return request("post","/logout");
+    return request("post","logout");
 }
 
 //发表新帖
 export function addTopic(title,tags,content) {
-    return request("post","/topic/add",{title,tags,content})
+    return request("post","topic/add",{title,tags,content})
 }
 
 //更新帖子
 export function updateTopic(id,title,tags,content) {
-    return request("post",`/topic/item/${id}`,{title,tags,content});
+    return request("post",`topic/item/${id}`,{title,tags,content});
 }
 
 //发表评论
 export function addComment(id,content){
-    return request("post",`/topic/item/${id}/comment/add`,{content})
+    return request("post",`topic/item/${id}/comment/add`,{content})
 }
 
 //删除评论
 export function deleteComment(id,cid){
-    return request("post",`/topic/item/${id}/comment/delete`,{cid});
+    return request("post",`topic/item/${id}/comment/delete`,{cid});
 }
 
 //删除主题

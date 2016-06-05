@@ -12,7 +12,8 @@ module.exports = function (done) {
 		nickname :{type:String},
 		about : {type:String},
 		isAdmin:{type:Boolean},
-		score:{type:Number}
+		score:{type:Number},
+		githubUsername:{type:String,index:true}
 	});
 	$.mongodb.model("User",User);
 	$.model.User = $.mongodb.model("User");
