@@ -13,7 +13,7 @@ module.exports = function (done) {
         $.method('user.get').call({githubUsername: profile.username}, (err, user) => {
             callback(err, {
                 info: user,
-                github: profile,
+                github: profile
             });
         });
 
@@ -23,18 +23,15 @@ module.exports = function (done) {
     $.router.get('/auth/github', passport.authenticate('github', {session: false}), function (req, res) {
 
         if (req.user.info) {
-
             // 用户存在
             req.session.user = req.user.info;
             req.session.logout_token = $.utils.randomString(20);
             res.redirect('/');
 
         } else {
-
             // 用户不存在
             req.session.github_user = req.user.github;
             res.redirect('/login?bind=1');
-
         }
 
     });
