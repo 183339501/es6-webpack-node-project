@@ -17,13 +17,16 @@ $.init.add((done) => {
 	$.config.load(path.resolve(__dirname,"config.js"));
 	const env = process.env.NODE_ENV||null;
 	if(env) {
-		debug("load env %s",env)
-		const fn = require("../config/"+env+".js");
-		if(typeof fn === "function"){
-			$.config.load(path.resolve(__dirname,"../config",env+".js"));	
-		} else{
-			throw new Error(`module "${env}.js" must export as a function`)
-		}
+		env.split(",").forEach(e=>{
+			debug("load env %s",e)
+			const fn = require("../config/"+e+".js");
+			if(typeof fn === "function"){
+				$.config.load(path.resolve(__dirname,"../config",e+".js"));
+			} else{
+				throw new Error(`module "${e}.js" must export as a function`)
+			}
+		})
+
 		
 	}
 	$.env = env;

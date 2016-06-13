@@ -12,6 +12,7 @@ module.exports = function (done) {
 	const debug = $.createDebug("init:express");
 	debug("init express ...");
 	const app = express();
+	$.express = app;
 
 	app.use(bodyParser.urlencoded({ extended: false }));
 	app.use(bodyParser.json());
@@ -48,7 +49,13 @@ module.exports = function (done) {
 		debug("API error %s",err && err.stack||err);
 		res.json({error:err.toString()});
 	});
-	app.listen($.config.get("web.port"),(err) =>{
-		done(err);
-	})
+
+	if($.config.get("web.port")){
+		app.listen($.config.get("web.port"),(err) =>{
+			done(err);
+		})
+	} else {
+		done();
+	}
+
 }
