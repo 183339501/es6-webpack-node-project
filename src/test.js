@@ -21,7 +21,7 @@ function makeRequest(method,path,params){
                 if(res.body.success){
                     resolve(res.body.result);
                 } else {
-                    reject(res.body);
+                    reject(new Error(res.body.error));
                 }
 
             })
