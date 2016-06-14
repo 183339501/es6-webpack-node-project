@@ -36,15 +36,15 @@ function makeRequest(method,path,params){
                 req = req.send(params);
             }
 
-            req.expect(200).end((err,res)=>{
-                if(err) return reject(err);
-                if(res.body.success){
+            req.expect(200).end((err, res) => {
+                if (err) return reject(err);
+
+                if (res.body.success) {
                     resolve(res.body.result);
                 } else {
                     reject(new Error(res.body.error));
                 }
-
-            })
+            });
         })
     })
 }
