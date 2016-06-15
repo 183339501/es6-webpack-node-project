@@ -1,7 +1,7 @@
 'use strict'
+import supertest from 'supertest';
+import './base';
 
-import request from "supertest";
-import "./base"
 
 // 清空Redis数据
 $.init.add(done => {
@@ -14,7 +14,6 @@ $.init.add(done => {
         }
     });
 });
-
 $.init.add(done => {
     $.validcode.connection.keys($.config.get('validcode.redis.prefix') + '*', (err, keys) => {
         if (err) return done(err);
@@ -26,11 +25,10 @@ $.init.add(done => {
     });
 });
 
-//清空数据库
-$.init.add(done=>{
+// 清空MongoDB数据库
+$.init.add(done => {
     $.mongodb.db.dropDatabase(done);
 });
-
 $.init.add(async function () {
     const data = require('./test.db');
     for (const name in data) {
@@ -40,26 +38,29 @@ $.init.add(async function () {
     }
 });
 
+
+// 初始化
 $.init((err) => {
-    if(err) {
-        console.log(err);
+    if (err) {
+        console.error(err);
         process.exit(-1);
     } else {
-        console.log("init");
+        console.log('inited [env=%s]', $.env);
     }
 });
 
-function makeRequest(method,path,params){
-    return new Promise((resolve,reject)=>{
-        $.ready(()=>{
-            params = params||{};
-            let req = request($.express)[method](path);
-            if(method==='get'||method==='head'){
+
+function makeRequest(agent, method, path, params) {
+    return new Promise((resolve, reject) => {
+        $.ready(() => {
+            params = params || {};
+            agent = agent || supertest($.express);
+            let req = agent[method](path);
+            if (method === 'get' || method === 'head') {
                 req = req.query(params);
             } else {
                 req = req.send(params);
             }
-
             req.expect(200).end((err, res) => {
                 if (err) return reject(err);
 
@@ -69,19 +70,26 @@ function makeRequest(method,path,params){
                     reject(new Error(res.body.error));
                 }
             });
-        })
-    })
+        });
+    });
 }
 
-function generateRequestMethod(method){
-    return function (path,params) {
-        return makeRequest(method,path,params);
+function generateRequestMethod(agent, method) {
+    return function (path, params) {
+        return makeRequest(agent, method, path, params);
     }
 }
 
-export default  {
-    get : generateRequestMethod("get"),
-    post : generateRequestMethod("post"),
-    put : generateRequestMethod("put"),
-    delete : generateRequestMethod("delete")
+function generateRequestSuite(agent) {
+    return {
+        get: generateRequestMethod(agent, 'get'),
+        post: generateRequestMethod(agent, 'post'),
+        put: generateRequestMethod(agent, 'put'),
+        delete: generateRequestMethod(agent, 'delete'),
+    };
+}
+
+export var request = generateRequestSuite(false);
+export function session() {
+    return generateRequestSuite(supertest.agent($.express));
 }
