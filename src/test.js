@@ -15,6 +15,31 @@ $.init.add(done => {
     });
 });
 
+$.init.add(done => {
+    $.validcode.connection.keys($.config.get('validcode.redis.prefix') + '*', (err, keys) => {
+        if (err) return done(err);
+        if (keys.length > 0) {
+            $.validcode.connection.del(keys, done);
+        } else {
+            done();
+        }
+    });
+});
+
+//清空数据库
+$.init.add(done=>{
+    $.mongodb.db.dropDatabase(done);
+});
+
+$.init.add(async function () {
+    const data = require('./test.db');
+    for (const name in data) {
+        for (const item of data[name]) {
+            await $.mongodb.db.collection(name).save(item);
+        }
+    }
+});
+
 $.init((err) => {
     if(err) {
         console.log(err);
@@ -26,8 +51,7 @@ $.init((err) => {
 
 function makeRequest(method,path,params){
     return new Promise((resolve,reject)=>{
-        $.ready(err=>{
-
+        $.ready(()=>{
             params = params||{};
             let req = request($.express)[method](path);
             if(method==='get'||method==='head'){
