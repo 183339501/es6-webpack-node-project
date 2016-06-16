@@ -37,17 +37,17 @@ export function request (method,path,data={}) {
 
 //获取帖子列表
 export function getTopicList (options) {
-    return request("get","/topic/list",options);
+    return request("get","topic/list",options);
 }
 
 //获取帖子详情
 export function getTopicDetail(id){
-    return request("get",`/topic/item/${id}`);
+    return request("get",`topic/item/${id}`);
 }
 
 //用户登陆
 export function login(name,password) {
-    return request("post",'/login',{name,password});
+    return request("post",'login',{name,password});
 }
 
 //注册
